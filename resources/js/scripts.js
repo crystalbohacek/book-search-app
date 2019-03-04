@@ -1,8 +1,19 @@
 $(document).ready(function() {
-  $.getJSON( "https://www.googleapis.com/books/v1/volumes?q=hello+world&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng", function( data ) {
-	  var items = data.items; //array of objects
+
+var value = '';
+var apikey = config.API_KEY;
+
+$( "input" )
+  .keyup(function() {
+    value = $( this ).val();
+  })
+  .keyup();
+
+$( "button" ).click(function() {
+    $.getJSON( "https://www.googleapis.com/books/v1/volumes?q=" + value + "&key=" + apikey, function( data ) {
+	  var items = data.items; 
 	  var html = '';
-	  $(".results").text(items.length + " results");
+	  $(".results").text(items.length + " results for \"" + value + "\"");
 
 	  for (i = 0; i<=items.length-1; i++){
 	  	var newLine = '<li>' + items[i].volumeInfo.title + '</li>';
@@ -10,5 +21,6 @@ $(document).ready(function() {
 	  }
 	  $(".results-list").html(html);
   });
+});
 
 });
