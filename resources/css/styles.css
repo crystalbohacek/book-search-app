@@ -23,7 +23,7 @@
 }
 
 .book-info p{
-	min-height: 5em;
+	min-height: 1em;
 }
 
 .book-title {
@@ -31,8 +31,8 @@
 	color: #606060;
 }
 
-.book-link{
-
+.publisher{
+  color: #808080;
 }
 
 img {
