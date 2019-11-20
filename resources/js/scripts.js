@@ -18,7 +18,7 @@ $(document).ready(function() {
     $.getJSON(
       "https://www.googleapis.com/books/v1/volumes?q=" +
         value +
-        "&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
+        "&maxResults=20&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
       function(data) {
         const results = data.items;
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
         $(".results").text('displaying results for "' + value + '"');
 
-        for (i = 0; i <= items.length - 1; i++) {
+        for (i = 0; i <= 11; i++) {
           let image = items[i].volumeInfo.imageLinks.thumbnail;
           let largeImage = image.replace("zoom=1", "zoom=3");
 
