@@ -78,6 +78,29 @@ body {
   color: #808080;
 }
 
-img {
-	max-width: 100%;
+.book-info img{
+	display: block;
+	margin: 0 auto;
+	min-height: 200px;
+    object-fit: cover;
 }
+
+@media only screen and (max-width: 575px) {
+  img {
+	width: 100%;
+  }
+  .search .fa-search {
+  	left: 19%;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+	img {
+		height: 200px;
+		width: 140px;
+	}
+	.search .fa-search {
+		left: 17%;
+	}
+}
+
