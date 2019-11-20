@@ -12,14 +12,37 @@ $(document).ready(function() {
       //Enter key pressed
       $("#search-button").click(); //Trigger search button click event
     }
+  }); 
+
+
+  let parameters = ''
+
+  $("#preview").change(
+    function(){
+        if ($(this).is(':checked')) {
+            parameters += '&filter=partial'
+        }
   });
+
+  $("#ebook").change(
+    function(){
+        if ($(this).is(':checked')) {
+            parameters += '&filter=ebooks'
+            console.log(parameters)
+        }
+  });
+
 
   $("#search-button").click(function() {
     $.getJSON(
       "https://www.googleapis.com/books/v1/volumes?q=" +
         value +
+        parameters +
         "&maxResults=20&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
       function(data) {
+        console.log(data)
+        //only run this code if google returns something. otherwise display "books not found" message.
+
         const results = data.items;
 
         //filter out "unknown author" books:
