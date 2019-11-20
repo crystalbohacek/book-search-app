@@ -25,6 +25,7 @@ $(document).ready(function() {
         //filter out "unknown author" books:
         const items = results.filter(r =>
           r.volumeInfo.hasOwnProperty("authors")
+          && r.volumeInfo.hasOwnProperty("publisher")
         );
 
         let html = "";

@@ -1,3 +1,7 @@
+* {
+	font-family: 'Assistant', sans-serif;
+}
+
 body {
 	background: #F8F8F8;
 }
@@ -44,6 +48,17 @@ body {
 .book-info {
 	padding: 1em;
 	box-shadow: 0 0 3px #D3D3D3;
+}
+
+.card {
+  flex: 1 0 auto; /* additionally, equal width */
+}
+
+.row {
+  align-content: center;
+  display: flex; /* equal height of the children */
+  flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .row-eq-height > [class*='col-'] {
