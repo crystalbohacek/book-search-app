@@ -1,3 +1,46 @@
+body {
+	background: #F8F8F8;
+}
+
+/* === Search Section === */
+
+.header {
+	background-color: #ff4a57;
+	color: white;
+	min-height: 60vh;
+}
+
+.search-section {
+	padding-top: 3.5rem;
+}
+
+.search-bar:focus {
+	outline: none !important;
+    box-shadow: 0 0 12px #a5222d;
+}
+
+.search { 
+	position: relative; 
+}
+.search input { 
+	text-indent: 30px;
+	width: 70%;
+	padding: 10px 10px 10px 15px;
+	margin: 0;
+	border: none;
+	border-radius: 15px;
+}
+
+.search .fa-search { 
+  position: absolute;
+  color: #808080;
+  top: 30%;
+  font-size: 15px;
+}
+
+/* === Results === */
+
+
 .book-info {
 	padding: 1em;
 	box-shadow: 0 0 3px #D3D3D3;
