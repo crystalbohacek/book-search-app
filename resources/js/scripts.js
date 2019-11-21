@@ -1,4 +1,9 @@
+
 $(document).ready(function() {
+  let $searchingWrapper = $("#searching-wrapper");
+  let $resultsWrapper = $("#results-wrapper");
+  let $resultsList = $(".results-list");
+
   let value = "";
 
   $("input") //store the value of the search query
@@ -14,36 +19,42 @@ $(document).ready(function() {
     }
   }); 
 
+  let parameters = "";
 
-  let parameters = ''
-
-  $("#preview").change(
+  $("input:checkbox").change(
     function(){
-        if ($(this).is(':checked')) {
-            parameters += '&filter=partial'
+        parameters = "";
+        if ($("#preview").is(":checked")) {
+            parameters += "&filter=full";
+        } 
+        if ($("#ebook").is(":checked")) {
+          parameters += "&filter=ebooks";
         }
   });
-
-  $("#ebook").change(
-    function(){
-        if ($(this).is(':checked')) {
-            parameters += '&filter=ebooks'
-            console.log(parameters)
-        }
-  });
-
 
   $("#search-button").click(function() {
+      $searchingWrapper.removeClass("hide");
+      $resultsWrapper.addClass("hide");  
+      $resultsList.addClass("hide");  
+      
+      //clear it
+
     $.getJSON(
       "https://www.googleapis.com/books/v1/volumes?q=" +
         value +
         parameters +
         "&maxResults=20&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
       function(data) {
-        console.log(data)
-        //only run this code if google returns something. otherwise display "books not found" message.
+
+        //only run this code if google returns something. otherwise display "books not found" message. 
+        
+        $searchingWrapper.addClass("hide");
+        $resultsWrapper.removeClass("hide");  
+        $resultsList.removeClass("hide");  
 
         const results = data.items;
+
+        console.log(data);
 
         //filter out "unknown author" books:
         const items = results.filter(r =>
@@ -60,7 +71,7 @@ $(document).ready(function() {
           let largeImage = image.replace("zoom=1", "zoom=3");
 
           let newLine =
-            '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"><div class="bg-white">' +
+            '<div class="results-list-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"><div class="bg-white">' +
             (!!items[i].volumeInfo.imageLinks &&
               '<a href="' +
                 items[i].volumeInfo.infoLink +
@@ -83,6 +94,9 @@ $(document).ready(function() {
           html += newLine;
         }
         $(".results-list").html(html);
+        $(".results-list-item").each(function(i){
+          let $resultListItem = $(this);
+        });
       }
     );
   });
