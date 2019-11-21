@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  let $searchingWrapper = $("#searching-wrapper");
+  let $resultsWrapper = $("#results-wrapper");
+  let $noResultsWrapper = $("#no-results-wrapper");
+  let $resultsList = $(".results-list");
+
   let value = "";
 
   $("input") //store the value of the search query
@@ -14,75 +19,93 @@ $(document).ready(function() {
     }
   }); 
 
+  //trigger the search filters when the checkbox is checked:
+  let parameters = "";
 
-  let parameters = ''
-
-  $("#preview").change(
+  $("input:checkbox").change(
     function(){
-        if ($(this).is(':checked')) {
-            parameters += '&filter=partial'
+        parameters = "";
+        if ($("#preview").is(":checked")) {
+            parameters += "&filter=full";
+        } 
+        if ($("#ebook").is(":checked")) {
+          parameters += "&filter=ebooks";
         }
   });
 
-  $("#ebook").change(
-    function(){
-        if ($(this).is(':checked')) {
-            parameters += '&filter=ebooks'
-            console.log(parameters)
-        }
-  });
-
-
+  //display the "searching..." message during search:
   $("#search-button").click(function() {
+      $searchingWrapper.removeClass("hide");
+      $resultsWrapper.addClass("hide");  
+      $resultsList.addClass("hide");  
+      $noResultsWrapper.addClass("hide");
+
     $.getJSON(
       "https://www.googleapis.com/books/v1/volumes?q=" +
         value +
         parameters +
         "&maxResults=20&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
       function(data) {
-        console.log(data)
-        //only run this code if google returns something. otherwise display "books not found" message.
+        
+        $searchingWrapper.addClass("hide");
 
         const results = data.items;
 
-        //filter out "unknown author" books:
-        const items = results.filter(r =>
-          r.volumeInfo.hasOwnProperty("authors")
-          && r.volumeInfo.hasOwnProperty("publisher")
-        );
+        console.log(data);
 
-        let html = "";
+        if (data.totalItems && data.totalItems > 0) {
 
-        $(".results").text('displaying results for "' + value + '"');
+            //display the result header and information:
+            $resultsWrapper.removeClass("hide");  
+            $resultsList.removeClass("hide");  
+            $(".results").text('displaying results for "' + value + '"');
 
-        for (i = 0; i <= 11; i++) {
-          let image = items[i].volumeInfo.imageLinks.thumbnail;
-          let largeImage = image.replace("zoom=1", "zoom=3");
 
-          let newLine =
-            '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"><div class="bg-white">' +
-            (!!items[i].volumeInfo.imageLinks &&
-              '<a href="' +
-                items[i].volumeInfo.infoLink +
-                '"><img class="card-img-top" src="' +
-                largeImage +
-                '">') +
-            '<div class="card-body" <p class="mt-3"><span class="book-title">' +
-            items[i].volumeInfo.title +
-            "</span></p></a><div><p> by " +
-            (!!items[i].volumeInfo.authors
-              ? items[i].volumeInfo.authors[0]
-              : "unknown author") +
-            "</p></div>" +
-            '<div><p class="publisher">' +
-            (!!items[i].volumeInfo.publisher
-              ? items[i].volumeInfo.publisher
-              : "unknown publisher") +
-            "</p></div></div></div></div>";
+            //filter out "unknown author" books:
+            const items = results.filter(r =>
+              r.volumeInfo.hasOwnProperty("authors")
+            );
 
-          html += newLine;
+            //create the book list:
+            let html = "";
+
+            for (i = 0; i <= 11; i++) {
+              let image = items[i].volumeInfo.imageLinks.thumbnail;
+              let largeImage = image.replace("zoom=1", "zoom=3");
+
+              let newLine =
+                '<div class="results-list-item col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4"><div class="bg-white">' +
+                (!!items[i].volumeInfo.imageLinks &&
+                  '<a href="' +
+                    items[i].volumeInfo.infoLink +
+                    '"><img class="card-img-top" src="' +
+                    largeImage +
+                    '">') +
+                '<div class="card-body" <p class="mt-3"><span class="book-title">' +
+                items[i].volumeInfo.title +
+                "</span></p></a><div><p> by " +
+                (!!items[i].volumeInfo.authors
+                  ? items[i].volumeInfo.authors[0]
+                  : "unknown author") +
+                "</p></div>" +
+                '<div><p class="publisher">' +
+                (!!items[i].volumeInfo.publisher
+                  ? items[i].volumeInfo.publisher
+                  : "unknown publisher") +
+                "</p></div></div></div></div>";
+
+              html += newLine;
+            }
+
+            $(".results-list").html(html);
+            $(".results-list-item").each(function(i){
+              let $resultListItem = $(this);
+            });
+
+        } else {
+          //display the no results message:
+          $noResultsWrapper.removeClass("hide");
         }
-        $(".results-list").html(html);
       }
     );
   });

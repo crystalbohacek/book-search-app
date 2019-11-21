@@ -19,15 +19,27 @@
 							<span class="fa fa-search" id="search-button"></span>
 						</div>
 							<div class="options">
-								  <input class="mr-2" id="preview" type="checkbox" name="option-preview" value="previewable">books with a free preview<br>
-								  <input class="mr-2" id="ebook" type="checkbox" name="option-ebook" value="ebook">books with an ebook available<br>
+								<label>
+								  <input class="mr-2" id="preview" type="checkbox" name="option-preview" value="previewable">full text available
+								</label>
+  							    <br>
+								<label>
+								  <input class="mr-2" id="ebook" type="checkbox" name="option-ebook" value="ebook">ebook available<br>
+								</label>								  
 							</div>
 				</div>
 		  </div>
 		</div>
 		<div class="container">
 			<div class="row justify-content-start">
-				<div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1 text-center">
+				<div id="searching-wrapper" class="hide col-sm-12 col-md-12 col-lg-10 offset-lg-1 text-center">
+					<h2 class="mt-3">Searching...</h2>
+				</div>
+				<div id="no-results-wrapper" class="hide col-sm-12 col-md-12 col-lg-10 offset-lg-1 text-center">
+					<h2 class="mt-3">No books found.</h2>
+					<p>Try adjusting your search by removing filters.</p>
+				</div>
+				<div id="results-wrapper" class="hide col-sm-12 col-md-12 col-lg-10 offset-lg-1 text-center">
 					<h2 class="mt-3">Results</h2>
 					<div class="container">
 						<p class="results font-italic mt-3"></p>
