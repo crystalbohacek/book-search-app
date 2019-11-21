@@ -44,7 +44,7 @@ $(document).ready(function() {
       "https://www.googleapis.com/books/v1/volumes?q=" +
         value +
         parameters +
-        "&maxResults=20&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
+        "&maxResults=40&key=AIzaSyA_0WhuTJiTIrRRbFVvMB05FjzhuL-Yeng",
       function(data) {
         
         $searchingWrapper.addClass("hide");
@@ -61,15 +61,23 @@ $(document).ready(function() {
             $(".results").text('displaying results for "' + value + '"');
 
 
-            //filter out "unknown author" books:
+            //filter out books with no author or no thumbnail:
             const items = results.filter(r =>
-              r.volumeInfo.hasOwnProperty("authors")
+              r.volumeInfo.hasOwnProperty("authors") &&
+              r.volumeInfo.hasOwnProperty("imageLinks")
             );
+
+            //loop through 12 books unless there are fewer than 12 available:
+            let iterations = 12
+
+            if (items.length < 12) {
+              iterations = items.length
+            }
 
             //create the book list:
             let html = "";
 
-            for (i = 0; i <= 11; i++) {
+            for (i = 0; i <= iterations-1; i++) {
               let image = items[i].volumeInfo.imageLinks.thumbnail;
               let largeImage = image.replace("zoom=1", "zoom=3");
 
@@ -81,7 +89,7 @@ $(document).ready(function() {
                     '"><img class="card-img-top" src="' +
                     largeImage +
                     '">') +
-                '<div class="card-body" <p class="mt-3"><span class="book-title">' +
+                '<div class="card-body" <p class="mt-3"><span class="book-title truncate">' +
                 items[i].volumeInfo.title +
                 "</span></p></a><div><p> by " +
                 (!!items[i].volumeInfo.authors

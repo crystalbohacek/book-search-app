@@ -100,6 +100,15 @@ body {
 	color: #606060;
 }
 
+.truncate {
+  display: block; /* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.8em;
+}
+
 .publisher{
   color: #808080;
 }
